@@ -1,9 +1,10 @@
 <!doctype html>
-<html lang="en" ng-app="application">
+<html lang="en" ng-app="application" ng-controller="MainCtrl">
   <head>
+    <base href="/"/>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Foundation for Apps</title>
+    <title>{{ Page.title() }}</title>
     <link href="./assets/css/app.css" rel="stylesheet" type="text/css">
     <script src="./assets/js/foundation.js"></script>
     <script src="./assets/js/templates.js"></script>
@@ -13,12 +14,27 @@
   <body>
     <div class="grid-frame vertical">
       <div class="grid-content shrink" style="padding: 0;">
-        <ul class="primary condense menu-bar">
-          <li><a><strong>Foundation for Apps</strong></a></li>
-        </ul>
+        <div class="menu-group primary">
+          <div class="menu-group-left">
+            <ul class="primary condense menu-bar large-icon-left">
+              <li class="show-all is-active">
+                <a ui-sref="home">
+                  <img src="assets/images/github_logo.png" class="iconic">
+                  <strong>Github Users</strong>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="menu-group-right shrink">
+            <ul class="menu-bar">
+              <li ui-sref-active="is-active"><a ui-sref="home">Home</a></li>
+              <li ui-sref-active="is-active"><a ui-sref="users">Users</a></li>
+              <li ui-sref-active="is-active"><a ui-sref="about">About</a></li>
+            </ul>
+          </div>
+        </div>
       </div>
-      <div ui-view class="grid-content">
-      </div>
+      <div ng-class="['ui-animation']" class="grid-frame vertical fadeIn easeInOut" ui-view ></div>
     </div>
   </body>
 </html>
