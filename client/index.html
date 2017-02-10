@@ -13,28 +13,45 @@
   </head>
   <body>
     <div class="grid-frame vertical">
-      <div class="grid-content shrink" style="padding: 0;">
-        <div class="menu-group primary">
-          <div class="menu-group-left">
-            <ul class="primary condense menu-bar large-icon-left">
-              <li class="show-all is-active">
-                <a ui-sref="home">
-                  <img src="assets/images/github_logo.png" class="iconic">
-                  <strong>Github Users</strong>
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div class="menu-group-right shrink">
-            <ul class="menu-bar">
-              <li ui-sref-active="is-active"><a ui-sref="home">Home</a></li>
-              <li ui-sref-active="is-active"><a ui-sref="users">Users</a></li>
-              <li ui-sref-active="is-active"><a ui-sref="about">About</a></li>
-            </ul>
+      <div class="main-nav grid-content shrink" style="padding: 0;">
+        <div class="hide-for-small-only">
+          <div class="menu-group dark">
+            <div class="menu-group-left">
+              <ul class="menu-bar dark medium-icon-left large-icon-left">
+                <li class="show-all is-active">
+                  <a ui-sref="home">
+                    <img src="assets/images/github_logo.png" class="iconic">
+                    <strong>Github Users</strong>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div class="menu-group-right shrink">
+              <ul class="menu-bar">
+                <li ui-sref-active="is-active"><a ui-sref="home">Home</a></li>
+                <li ui-sref-active="is-active"><a ui-sref="users">Users</a></li>
+                <li ui-sref-active="is-active"><a ui-sref="about">About</a></li>
+              </ul>
+            </div>
           </div>
         </div>
+        <div class="show-for-small-only">
+          <ul class="menu-bar dark">
+            <li class="show-all is-active">
+              <a ui-sref="home">
+                <img src="assets/images/github_logo.png" class="iconic">
+                <strong>Github Users</strong>
+              </a>
+            </li>
+          </ul>
+          <ul class="menu-bar dark">
+            <li ui-sref-active="is-active"><a ui-sref="home">Home</a></li>
+            <li ui-sref-active="is-active"><a ui-sref="users">Users</a></li>
+            <li ui-sref-active="is-active"><a ui-sref="about">About</a></li>
+          </ul>
+        </div>
       </div>
-      <div ng-class="['ui-animation']" class="grid-frame vertical fadeIn easeInOut" ui-view ></div>
+      <div ng-class="['ui-animation']" class="main-view-container grid-frame vertical fadeIn easeInOut" ui-view></div>
     </div>
   </body>
 </html>

@@ -1,0 +1,11 @@
+<div class="grid-block">
+  <div class="medium-2 large-2 grid-content" autoscroll="true">
+    <h5>Users List</h5>
+    <ul class="menu-bar vertical">
+      <li ng-repeat="user in users"><a ui-sref="users.content( {login: '{{user.login}}'} )">{{user.login}}</a></li>
+    </ul>
+  </div>
+  <div class="medium-10 large-10 grid-content" autoscroll="true">
+    <div ui-view></div>
+  </div>
+</div>
