@@ -10,25 +10,32 @@
     'foundation.dynamicRouting',
     'foundation.dynamicRouting.animations'
   ])
-
-
+  /*
+  *
+  *
+  *
+  * 
+  * - Controllers
+  *
+  *
+  *
+  * 
+  */
   .controller('MainCtrl', function($scope, Page){
     $scope.Page = Page;
   })
-
-
   .controller('HomeCtrl', function($scope, $state, $http, Page){
     Page.setTitle('Home');
   })
-
-
+  .controller('AboutCtrl', function($scope, $state, $http, Page){
+    Page.setTitle('About');
+  })
   .controller('UsersMainCtrl', function($scope, $state, $http, Page, usersList, UsersPage){
+    Page.setTitle('Users');
     $scope.users = usersList;
     $scope.currPage = 1;
 
     $state.go('users.content', {login: $scope.users[0].login});
-
-    Page.setTitle('Users');
 
     $scope.getNextPage = function () {
       $scope.currPage++;
@@ -40,9 +47,8 @@
         }));
       });
     }
+    // ...
   })
-
-
   .controller('UsersCtrl', function($scope, $state, $http, Page, $stateParams, User){
     Page.setTitle('Users');
 
@@ -57,22 +63,19 @@
     }, function(newLogin) {
         getInfo(newLogin);
     });
+    // ...
   })
-
-
-  .controller('AboutCtrl', function($scope, $state, $http, Page){
-    Page.setTitle('About');
-  })
-
-
-
-
-
-
-
-
-
-
+  /*
+  *
+  *
+  *
+  * 
+  * - Services
+  *
+  *
+  *
+  * 
+  */
   .factory('Page', function() {
     var title = 'default';
     return {
@@ -80,8 +83,6 @@
       setTitle: function(newTitle) { title = newTitle }
     };
   })
-
-
   .service('User', function($http, $q) {
     return {
       "getData": function(login){
@@ -107,10 +108,9 @@
           deferred.reject("Error: request returned status " + status); 
       });
       return deferred.promise;
-
     }
+    // ...
   })
-
   .service('UsersPage', function($http, $q) {
     return {
       "getData": function(pageID){
@@ -136,28 +136,24 @@
           deferred.reject("Error: request returned status " + status); 
       });
       return deferred.promise;
-
     }
+    // ...
   })
-
-
-
-
     .config(config)
     .run(run)
   ;
 
-
-
-
-
-
-
-
-
-
-  // config.$inject = ['$urlRouterProvider', '$locationProvider'];
-
+  /*
+  *
+  *
+  *
+  * 
+  * - config()
+  *
+  *
+  *
+  * 
+  */
   function config($urlRouterProvider, $stateProvider, $locationProvider) {
 
     $stateProvider
@@ -189,8 +185,20 @@
         return newPath; 
       } 
     });
+    // ...
   }
 
+  /*
+  *
+  *
+  *
+  * 
+  * - run()
+  *
+  *
+  *
+  * 
+  */
   function run() {
     FastClick.attach(document.body);
   }
