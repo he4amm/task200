@@ -1,14 +1,22 @@
----
-name: users.content
-url: /:login
-controller: UsersCtrl
----
-  <div class="profile-card">
-    <img src="{{currUser.avatar_url}}" alt="Inky">
-    <div class="profile-info">
-      <h4 class="subheader">{{currUser.name}}</h4>
-      <p><strong>Id :</strong> {{currUser.id}}</p>
-      <p><strong>Email :</strong> {{currUser.email}}</p>
-      <p><strong>Created at :</strong> {{currUser.created_at}}</p>
-    </div>
+<div class="grid-block">
+  <div class="medium-2 large-2 grid-content users-container" autoscroll="true">
+    <h5>Users List</h5>
+    <ul class="menu-bar vertical">
+      <li ng-repeat="user in users" ui-sref-active="is-active">
+        <a ui-sref="users.UserInfo( {login: '{{user.login}}'} )">
+          <img src="{{user.avatar_url}}" class="iconic">
+          {{user.login}}
+        </a>
+      </li>
+    </ul>
+    <a class="button expand loadmore"
+      ng-click="getNextPage()"
+      ng-class="loadingNewPage ? 'disabled' : 'not-disabled'">
+      <span ng-if="!loadingNewPage">Load More</span>
+      <span ng-if="loadingNewPage">Loading...</span>
+    </a>
   </div>
+  <div class="medium-10 large-10 grid-content profile-container" autoscroll="true">
+    <div ui-view></div>
+  </div>
+</div>

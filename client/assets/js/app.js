@@ -10,6 +10,8 @@
     'foundation.dynamicRouting',
     'foundation.dynamicRouting.animations'
   ])
+
+
   /*
   *
   *
@@ -24,38 +26,47 @@
   .controller('MainCtrl', function($scope, Page){
     $scope.Page = Page;
   })
-  .controller('HomeCtrl', function($scope, $state, $http, Page){
+
+
+  .controller('HomeCtrl', function(Page){
     Page.setTitle('Home');
   })
-  .controller('AboutCtrl', function($scope, $state, $http, Page){
+
+
+  .controller('AboutCtrl', function(Page){
     Page.setTitle('About');
   })
-  .controller('UsersMainCtrl', function($scope, $state, $http, Page, usersList, UsersPage){
+
+
+  .controller('UsersCtrl', function($scope, $state, Page, initialPage, GitHub){
     Page.setTitle('Users');
-    $scope.users = usersList;
+    $scope.users = initialPage.data;
     $scope.currPage = 1;
 
-    $state.go('users.content', {login: $scope.users[0].login});
+    $state.go('users.UserInfo', {login: $scope.users[0].login});
 
     $scope.getNextPage = function () {
       $scope.currPage++;
       $scope.loadingNewPage = true;
-      UsersPage.getData($scope.currPage).then(function(data){
+
+      GitHub.getPage($scope.currPage).then(function(response){
         $scope.loadingNewPage = false;
-        $scope.users.push.apply($scope.users ,data.map(function(userobj){
+        $scope.users.push.apply($scope.users, response.data.map(function(userobj){
           return userobj;
         }));
       });
     }
     // ...
   })
-  .controller('UsersCtrl', function($scope, $state, $http, Page, $stateParams, User){
+
+
+  .controller('UserInfoCtrl', function($scope, $state, $http, Page, $stateParams, GitHub){
     Page.setTitle('Users');
 
     function getInfo(login){
-      User.getData(login).then(function(info){
-        $scope.currUser = info;
-      })
+      GitHub.getUser(login).then(function(response){
+        $scope.currUser = response.data;
+      });
     }
 
     $scope.$watch(function() {
@@ -65,6 +76,8 @@
     });
     // ...
   })
+
+
   /*
   *
   *
@@ -76,72 +89,48 @@
   *
   * 
   */
+ 
+
   .factory('Page', function() {
     var title = 'default';
+
     return {
       title: function() { return title; },
       setTitle: function(newTitle) { title = newTitle }
     };
   })
-  .service('User', function($http, $q) {
+
+
+  .factory('GitHub', function($http){
+    var method = 'GET';
+    var dataType = 'application/javascript';
+    var url = "https://api.github.com/users";
+
     return {
-      "getData": function(login){
-        return getUserData(login);
+      getUser: function (login) {
+
+        return $http({
+          method: method,
+          dataType: dataType,
+          url: url + "/" + login
+        });
+
+      },
+      getPage: function (id) {
+
+        return $http({
+          method: method,
+          dataType: dataType,
+          url: url + "?page=" + id
+        });
+
       }
-    }
-    
-    //fetch user data in deferred technique
-    function getUserData(login) {
-      // There will always be a promise so always declare it.
-      var deferred = $q.defer();
-      if (Cache[login]) {
-          // Resolve the deferred $q object before returning the promise
-          deferred.resolve(Cache[login]); 
-          return deferred.promise;
-      } 
-      // else- not in cache 
-      $http.get("https://api.github.com/users/"+login).success(function(data){
-          // Store your data or what ever.... 
-          // Then resolve
-          deferred.resolve(data);               
-      }).error(function(data, status, headers, config) {
-          deferred.reject("Error: request returned status " + status); 
-      });
-      return deferred.promise;
-    }
-    // ...
-  })
-  .service('UsersPage', function($http, $q) {
-    return {
-      "getData": function(pageID){
-        return getUsersPage(pageID);
-      }
-    }
-    
-    //fetch user data in deferred technique
-    function getUsersPage(pageID) {
-      // There will always be a promise so always declare it.
-      var deferred = $q.defer();
-      if (Cache[pageID]) {
-          // Resolve the deferred $q object before returning the promise
-          deferred.resolve(Cache[pageID]); 
-          return deferred.promise;
-      } 
-      // else- not in cache 
-      $http.get("https://api.github.com/users", {page: pageID}).success(function(data){
-          // Store your data or what ever.... 
-          // Then resolve
-          deferred.resolve(data);               
-      }).error(function(data, status, headers, config) {
-          deferred.reject("Error: request returned status " + status); 
-      });
-      return deferred.promise;
-    }
-    // ...
+    };
   })
     .config(config)
     .run(run)
   ;
+
 
   /*
   *
@@ -156,15 +145,17 @@
   */
   function config($urlRouterProvider, $stateProvider, $locationProvider) {
 
+    var initialPageResolve = function (GitHub) {
+      return GitHub.getPage(1);
+    }
+
     $stateProvider
       .state('users',{
         url: '/users',
-        templateUrl: 'templates/usersMain.html',
-        controller: 'UsersMainCtrl',
+        templateUrl: 'templates/users.html',
+        controller: 'UsersCtrl',
         resolve: {
-          "usersList": function (UsersPage) {
-            return UsersPage.getData(1);
-          }
+          "initialPage": initialPageResolve
         }
       })
 
@@ -187,6 +178,7 @@
     });
     // ...
   }
+
 
   /*
   *
