@@ -62,6 +62,7 @@
 
   .controller('UserInfoCtrl', function($scope, $state, $http, Page, $stateParams, GitHub){
     Page.setTitle('Users');
+    $scope.currUser = {};
 
     function getInfo(login){
       GitHub.getUser(login).then(function(response){
@@ -70,9 +71,9 @@
     }
 
     $scope.$watch(function() {
-        return $stateParams.login;
+      return $stateParams.login;
     }, function(newLogin) {
-        getInfo(newLogin);
+      getInfo(newLogin);
     });
     // ...
   })
