@@ -4,7 +4,6 @@ describe('Controller: UserInfoCtrl', function(){
       controller,
       Page,
       GitHubMock,
-      stateParams,
       getResponse = {data: {login: 'user1', name: 'First Last', id: '1'}};
 
   beforeEach(function(){
@@ -14,7 +13,6 @@ describe('Controller: UserInfoCtrl', function(){
       $rootScope = $injector.get('$rootScope');
       $scope = $rootScope.$new();
       Page = $injector.get('Page');
-      stateParams = $injector.get('$stateParams');
       GitHubMock = {
         getUser: function(login) {},
         getPage: function(id) {}
