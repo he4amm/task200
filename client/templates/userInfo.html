@@ -1,14 +1,9 @@
----
-name: users.UserInfo
-url: /:login
-controller: UserInfoCtrl
----
-  <div class="profile-card">
-    <img src="{{currUser.avatar_url}}" alt="Inky">
-    <div class="profile-info">
-      <h4 class="subheader">{{currUser.name}}</h4>
-      <p><strong>Id :</strong> {{currUser.id}}</p>
-      <p><strong>Email :</strong> {{currUser.email}}</p>
-      <p><strong>Created at :</strong> {{currUser.created_at}}</p>
-    </div>
+<div class="profile-card">
+  <img src="{{currUser.avatar_url}}" alt="Inky">
+  <div class="profile-info">
+    <h4 class="subheader">{{currUser.name}}</h4>
+    <p><strong>Id :</strong> {{currUser.id}}</p>
+    <p><strong>Email :</strong> {{currUser.email}}</p>
+    <p><strong>Created at :</strong> {{currUser.created_at}}</p>
   </div>
+</div>

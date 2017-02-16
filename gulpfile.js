@@ -44,7 +44,11 @@ var paths = {
   ],
   // These files are for your app's JavaScript
   appJS: [
-    'client/assets/js/app.js'
+    'client/assets/js/app.js',
+    'client/assets/js/config.js',
+    'client/assets/js/run.js',
+    'client/assets/js/services/*.factory.js',
+    'client/assets/js/controllers/*.controller.js'
   ]
 }
 
@@ -68,10 +72,10 @@ gulp.task('copy', function() {
 // Copies your app's page templates and generates URLs for them
 gulp.task('copy:templates', function() {
   return gulp.src('./client/templates/**/*.html')
-    .pipe(router({
-      path: 'build/assets/js/routes.js',
-      root: 'client'
-    }))
+    // .pipe(router({
+    //   path: 'build/assets/js/routes.js',
+    //   root: 'client'
+    // }))
     .pipe(gulp.dest('./build/templates'))
   ;
 });
@@ -168,7 +172,7 @@ gulp.task('default', ['server'], function () {
   gulp.watch(['./client/assets/scss/**/*', './scss/**/*'], ['sass']);
 
   // Watch JavaScript
-  gulp.watch(['./client/assets/js/**/*', './js/**/*'], ['uglify:app']);
+  gulp.watch(['./client/assets/js/{controllers, services}/**/*', './js/**/*'], ['uglify:app']);
 
   // Watch static files
   gulp.watch(['./client/**/*.*', '!./client/templates/**/*.*', '!./client/assets/{scss,js}/**/*.*'], ['copy']);

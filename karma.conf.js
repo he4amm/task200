@@ -21,7 +21,7 @@ module.exports = function(config) {
       'build/assets/js/foundation.js',
       'build/assets/js/routes.js',
       'build/assets/js/app.js',
-      'test/unit/**/*.js'
+      'test/unit/**/*.spec.js'
     ],
 
 
